@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="BackgroundRandomizer/BackgroundRandomizer.vcxproj" Id="bd0e4bbe-8730-4712-acf6-6082071faa5d" />
+</Solution>

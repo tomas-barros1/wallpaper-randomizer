@@ -1,0 +1,32 @@
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.suo
+*.sdf
+*.opensdf
+*.db
+*.opendb
+
+# Build output
+x64/
+Debug/
+Release/
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.log
+*.tlog
+*.recipe
+*.idb
+*.iobj
+*.ipdb
+*.ipch
+*.ipch
+
+# vcpkg
+vcpkg.applocal.log
+
+# Runtime data (gerado pelo programa)
+wallpapersDir.json
+lastWallpaper.json
