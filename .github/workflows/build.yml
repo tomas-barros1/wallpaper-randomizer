@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download nlohmann/json
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path deps/nlohmann
+          Invoke-WebRequest `
+            -Uri "https://github.com/nlohmann/json/releases/download/v3.12.0/json.hpp" `
+            -OutFile "deps/nlohmann/json.hpp"
+
+      - name: Build
+        run: >
+          msbuild BackgroundRandomizer/BackgroundRandomizer.vcxproj
+          /p:Configuration=Release
+          /p:Platform=x64
+          /p:PlatformToolset=v143
+          /restore
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BackgroundRandomizer-x64
+          path: x64/Release/BackgroundRandomizer.exe

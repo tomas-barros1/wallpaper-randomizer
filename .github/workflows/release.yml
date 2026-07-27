@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download nlohmann/json
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path deps/nlohmann
+          Invoke-WebRequest `
+            -Uri "https://github.com/nlohmann/json/releases/download/v3.12.0/json.hpp" `
+            -OutFile "deps/nlohmann/json.hpp"
+
+      - name: Build
+        run: >
+          msbuild BackgroundRandomizer/BackgroundRandomizer.vcxproj
+          /p:Configuration=Release
+          /p:Platform=x64
+          /p:PlatformToolset=v143
+          /restore
+
+      - name: Package release
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release
+          Copy-Item "x64/Release/BackgroundRandomizer.exe" -Destination "release/"
+          Copy-Item "BackgroundRandomizer/cfg.example.json" -Destination "release/"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/BackgroundRandomizer.exe
+            release/cfg.example.json
+          generate_release_notes: true
