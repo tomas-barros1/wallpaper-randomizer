@@ -36,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: BackgroundRandomizer-x64
-          path: x64/Release/BackgroundRandomizer.exe
+          path: BackgroundRandomizer/x64/Release/BackgroundRandomizer.exe

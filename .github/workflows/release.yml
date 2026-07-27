@@ -36,8 +36,11 @@ jobs:
       - name: Package release
         shell: pwsh
         run: |
+          $exe = Get-ChildItem -Recurse -Filter "BackgroundRandomizer.exe" | Select-Object -First 1
+          if (-not $exe) { throw "BackgroundRandomizer.exe not found" }
+          Write-Host "Found exe at: $($exe.FullName)"
           New-Item -ItemType Directory -Force -Path release
-          Copy-Item "x64/Release/BackgroundRandomizer.exe" -Destination "release/"
+          Copy-Item $exe.FullName -Destination "release/"
           Copy-Item "BackgroundRandomizer/cfg.example.json" -Destination "release/"
 
       - name: Create GitHub Release
